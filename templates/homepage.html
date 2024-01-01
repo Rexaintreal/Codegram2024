@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="icon" href="/static/images/CG.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/d6f5400f00.js" crossorigin="anonymous"></script>
+  <title>Codegram - Home</title>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
+  <!-- Add this line to include responsive.css -->
+  <link rel="stylesheet" type="text/css" href="/static/responsive.css">
+  <!-- Include CodeMirror CSS and JS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,700&display=swap">
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/monokai.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;300;400;600;700&family=Montserrat:wght@500;600;700&family=Source+Code+Pro:wght@800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.min.js"></script>
+  <style>
+     body {
+            font-family: 'Lato', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lato', sans-serif;
+        }
+        h1.text-white.text-2xl.font-bold {
+          font-family: 'Source Code Pro', monospace;
+        }
+    .post {
+      background-color: #333333;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0.5rem;
+    }
+
+    .invert-icon {
+      filter: invert(100%);
+    }
+
+    .code-editor {
+      min-height: 50px; /* Set a minimum height */
+      height: auto;
+      overflow-y: hidden;
+      max-width: AUTO;
+    }
+
+    .expand-button {
+      display: none;
+    }
+
+    .expanded {
+      overflow-y: auto;
+      max-height: none !important;
+    }
+  
+    .custom-post-container {
+      max-width: 1000px; /* Adjust the desired width */
+      margin-right: auto;
+      margin-left: auto; 
+      padding-top: 20px;
+      padding-bottom: 20px; /* Fix padding declaration */
+
+    }
+
+    .code-editor-container {
+     display: auto;
+     flex-direction: row; /* Horizontal layout */
+     align-items: center; /* Vertically center items */
+    }
+
+    .profile-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px; /* Vertically center items */
+    }
+
+    .profile-section img {
+      margin-right: 10px; /* Adjust the desired spacing */
+    }
+
+    .username {
+      margin-right: 10px; /* Adjust the desired spacing */
+    }
+    
+  </style>
+</head>
+<body class="bg-black">
+  <div class="container mx-auto">
+    <header class="flex justify-between items-center py-4">
+      <div class="logo flex item-centre">
+        <img src="static/images/CG.png" alt="Codegram Logo" class="rounded-full w-12 h-12 mr-2">
+        <h1 class="text-white text-4xl font-bold">Codegram</h1>
+      </div>
+      <div class="search-bar flex justify-center">
+        <form action="/search" method="GET" class="flex items-center">
+          <input type="text" placeholder="Search" name="query" class="bg-white text-black py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800">
+          <button type="submit" class="ml-2 relative flex items-center transition-transform transform hover:scale-110">
+            <i class="fa-solid fa-magnifying-glass fa-xl" style="color: #ffffff;"></i>
+          </button>
+        </form>
+      </div>
+      <nav>
+        <ul class="flex items-center space-x-4">
+          <li>
+            <a href="/homepage" class="relative flex items-center transition-transform transform hover:scale-110 ">
+                <i title="Homepage" alt="Homepage" class="fa-solid fa-house fa-xl text-white"></i>
+            </a>
+          </li>
+          <li>
+            <a href="/create_post"class="relative flex items-center transition-transform transform hover:scale-110 ">
+              <i title="Create Post" alt="Create Post" class="fa-solid fa-square-plus fa-xl" style="color: #ffffff;"></i>
+            </a>
+          </li>
+          <li><a href="/profile" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Profile" alt="Profile" class="fa-solid fa-user fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/globalchat" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Global Chat" alt="Global Chat" class="fa-solid fa-paper-plane fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/settings" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Settings" alt="Settings" class="fa-solid fa-cog fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/community" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Community" alt="Community" class="fa-solid fa-users fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/logout" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Log Out" alt="logout" class="fa-solid fa-sign-out fa-xl" style="color: #ffffff;"></i></a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="flex-auto">
+      <div id="post-container" class="posts bg-black custom-post-container">
+        {% for post in posts|sort(reverse=True, attribute='id') %}
+          <div class="post  p-6 mb-6 rounded-lg" data-id="{{ post.id }}">
+            <div class="profile-section">
+              {% if post.username in profile_pictures %}
+                <img src="{{ profile_pictures[post.username] }}" alt="Profile Picture" class="w-12 h-12 rounded-full mr-2">
+              {% else %}
+                <img src="/static/uploads/default.jpg" alt="Default Profile Picture" class="w-12 h-12 rounded-full mr-2">
+              {% endif %}
+              <a href="/profile/{{ post.username }}" class="username text-white text-2xl">{{ post.username }}</a>
+            </div>
+            <div class="post-content mb-4">
+              <div class="code-editor-container">
+                <div class="code-editor">
+                  <textarea class="code-editor-textarea bg-gray-800 text-white py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>{{ post.content }}</textarea>
+                </div>
+                {% if post.content|length > 200 %}
+                <div class="expanded hidden">
+                    <textarea class="expanded-textarea bg-gray-800 text-white py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>{{ post.content }}</textarea>
+                </div>
+                <button class="expand-button" onclick="expandCodeEditor(this)">View More</button>
+                {% endif %}
+              </div>
+              <span class="text-white">Language used: {{ post.language }}</span>
+              {% if post.caption %}
+                <p class="text-white">Caption: {{ post.caption }}</p>
+              {% endif %}
+              {% if post.file_name %}
+                <a href="{{ url_for('download_file', filename=post.file_name) }}" class="file-link text-blue-500 hover:underline relative flex items-center transition-transform transform hover:scale-100 hover:scale-x-100">
+                  <i class="fa-solid fa-download border-black fa-xl" style="color: white;"></i>
+                  Download Attachment
+                </a>
+              {% endif %}
+            </div>
+            <div class="post-features flex items-center space-x-4">
+              <form action="/like_post" method="POST">
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <div class="flex items-center">
+                  <button type="submit" class="like-icon focus:outline-none relative flex items-center transition-transform transform hover:scale-110">
+                    <i class="fa-solid fa-heart fa-xl" style="color: red;"></i>
+                  </button>
+                  <div class="icon-with-count flex flex-col items-center" >
+                    <span class="like-count text-white font-bold">{{ post.like_count }}</span>
+                  </div>
+                </div>
+              </form>
+              <div class="flex items-center relative flex items-center transition-transform transform hover:scale-110">
+                <a href="/comment_post/{{ post.id }}" class="comment-icon">
+                  <button type="submit" class="dislike-icon small focus:outline-none">
+                    <i class="fa-solid fa-comment fa-xl" style="color: #ffffff;"></i>
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        {% if posts|length == 0 %}
+          <p class="no-posts text-gray-300">No posts found.</p>
+        {% endif %}
+      </div>
+    </div>
+    <footer class="py-4">
+      <p class="text-gray-300 text-center">&copy; 2024 Codegram</p>
+    </footer>
+  </div>
+  <!-- Include your JavaScript file -->
+  <script>
+    // Initialize CodeMirror on all textareas with class "code-editor-textarea"
+    var codeEditorTextareas = document.querySelectorAll(".code-editor-textarea");
+    codeEditorTextareas.forEach(function(textarea) {
+      CodeMirror.fromTextArea(textarea, {
+        mode: 'python',
+        readOnly: true,
+        theme: 'monokai',
+        lineNumbers: true,
+        viewportMargin: Infinity // Set viewportMargin to auto
+      });
+    });
+
+    function expandCodeEditor(button) {
+      var container = button.parentNode;
+      var codeEditor = container.querySelector('.code-editor-container');
+      var hiddenTextarea = container.querySelector('.expanded-textarea');
+      codeEditor.classList.add('expanded');
+      hiddenTextarea.classList.remove('hidden');
+      button.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

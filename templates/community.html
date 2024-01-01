@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="/static/images/CG.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codegram - Community</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/d6f5400f00.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-black">
+    <div class="container mx-auto">
+        <header class="flex justify-between items-center py-4">
+            <div class="logo flex item-centre">
+              <img src="static/images/CG.png" alt="Codegram Logo" class="rounded-full w-12 h-12 mr-2">
+              <h1 class="text-white text-4xl font-bold">Codegram</h1>
+            </div>
+            <div class="search-bar flex justify-center">
+              <form action="/search" method="GET" class="flex items-center">
+                <input type="text" placeholder="Search" name="query" class="bg-white text-black py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800">
+                <button type="submit" class="ml-2 relative flex items-center transition-transform transform hover:scale-110">
+                  <i class="fa-solid fa-magnifying-glass fa-xl" style="color: #ffffff;"></i>
+                </button>
+              </form>
+            </div>
+            <nav>
+              <ul class="flex items-center space-x-4">
+                <li>
+                  <a href="/homepage" class="relative flex items-center transition-transform transform hover:scale-110 ">
+                      <i title="Homepage" alt="Homepage" class="fa-solid fa-house fa-xl text-white"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="/create_post"class="relative flex items-center transition-transform transform hover:scale-110 ">
+                    <i title="Create Post" alt="Create Post" class="fa-solid fa-square-plus fa-xl" style="color: #ffffff;"></i>
+                  </a>
+                </li>
+                <li><a href="/profile" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Profile" alt="Profile" class="fa-solid fa-user fa-xl" style="color: #ffffff;"></i></a></li>
+                <li><a href="/globalchat" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Global Chat" alt="Global Chat" class="fa-solid fa-paper-plane fa-xl" style="color: #ffffff;"></i></a></li>
+                <li><a href="/settings" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Settings" alt="Settings" class="fa-solid fa-cog fa-xl" style="color: #ffffff;"></i></a></li>
+                <li><a href="/community" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Community" alt="Community" class="fa-solid fa-users fa-xl" style="color: #ffffff;"></i></a></li>
+                <li><a href="/logout" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Log Out" alt="logout" class="fa-solid fa-sign-out fa-xl" style="color: #ffffff;"></i></a></li>
+              </ul>
+            </nav>
+          </header>
+        <main>
+            <div class="container mx-auto">
+                <div class="py-4">
+                    <h2 class="text-4xl font-bold text-white mb-4">Codegram Community</h2>
+                </div>
+                <div class="flex space-x-4 mb-4">
+                    <button class="flex items-center py-2 px-4 bg-black border border-white text-white rounded-lg tab-button" data-tab="python">
+                        <i class="fa-brands fa-python fa-lg mr-2 "></i> Python
+                    </button>                       
+                    <button class="flex items-center py-2 px-4 bg-black border border-white text-white rounded-lg tab-button" data-tab="java">
+                        <i class="fa-brands fa-java fa-lg mr-2 "></i> Java
+                    </button>
+                    <button class="flex items-center py-2 px-4 bg-black border border-white text-white rounded-lg tab-button" data-tab="cpp">
+                        <i class="fa-solid fa-c fa-lg mr-2 "></i> C++
+                    </button>
+                </div>
+                <!-- Python Section -->
+                <section id="python" style="display: none;">
+                    <h2 class="text-2xl font-bold text-white mb-4">Python</h2>
+                    <div class="py-8">
+                        <h2 class="text-2xl font-bold text-white mb-4">Latest Python News</h2>
+                        <div class="grid grid-cols-1 gap-4">
+                            {% for article in python_news %}
+                            {% if loop.index <= 12 %} <!-- Limit to 5 news articles -->
+                            <div class="bg-back p-6 rounded-lg">
+                                <h3 class="text-lg font-bold text-white mb-2">{{ article.title }}</h3>
+                                <p class="text-gray-300">{{ article.description }}</p>
+                                <a href="{{ article.url }}" target="_blank"
+                                    class="text-blue-500 hover:underline mt-2">Read more</a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="py-8">
+                        <h2 class="text-2xl font-bold text-white mb-4">Popular Python Repositories</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {% for repository in python_repositories %}
+                            {% if loop.index <= 12 %} <!-- Limit to 5 news articles -->
+                            <div class="bg-back p-6 rounded-lg">
+                                <h3 class="text-lg font-bold text-white mb-2">{{ repository.name }}</h3>
+                                <p class="text-gray-300">{{ repository.description }}</p>
+                                <div class="flex items-center mt-4">
+                                    <img src="{{ repository.owner.avatar_url }}" alt="Owner Avatar"
+                                        class="w-6 h-6 rounded-full mr-2">
+                                    <p class="text-gray-300">{{ repository.owner.login }}</p>
+                                </div>
+                                <a href="{{ repository.html_url }}" target="_blank"
+                                    class="text-blue-500 hover:underline mt-2">View on GitHub</a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+
+                <!-- C++ Section -->
+                <section id="cpp" style="display: none;">
+                    <h2 class="text-2xl font-bold text-white mb-4">C++</h2>
+                    <div class="py-8">
+                        <h2 class="text-2xl font-bold text-white mb-4">Latest C++ News</h2>
+                        <div class="grid grid-cols-1 gap-4">
+                            {% for article in cpp_news %}
+                            {% if loop.index <= 12 %} <!-- Limit to 5 news articles -->
+                            <div class="bg-back p-6 rounded-lg">
+                                <h3 class="text-lg font-bold text-white mb-2">{{ article.title }}</h3>
+                                <p class="text-gray-300">{{ article.description }}</p>
+                                <a href="{{ article.url }}" target="_blank"
+                                    class="text-blue-500 hover:underline mt-2">Read more</a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="py-8">
+                        <h2 class="text-2xl font-bold text-white mb-4">Popular C++ Repositories</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {% for repository in cpp_repositories %}
+                            {% if loop.index <= 12 %} <!-- Limit to 5 news articles -->
+                            <div class="bg-back p-6 rounded-lg">
+                                <h3 class="text-lg font-bold text-white mb-2">{{ repository.name }}</h3>
+                                <p class="text-gray-300">{{ repository.description }}</p>
+                                <div class="flex items-center mt-4">
+                                    <img src="{{ repository.owner.avatar_url }}" alt="Owner Avatar"
+                                        class="w-6 h-6 rounded-full mr-2">
+                                    <p class="text-gray-300">{{ repository.owner.login }}</p>
+                                </div>
+                                <a href="{{ repository.html_url }}" target="_blank"
+                                    class="text-blue-500 hover:underline mt-2">View on GitHub</a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Java Section -->
+                <section id="java" style="display: none;">
+                    <h2 class="text-2xl font-bold text-white mb-4">Java</h2>
+                    <div class="py-8">
+                        <h2 class="text-2xl font-bold text-white mb-4">Latest Java News</h2>
+                        <div class="grid grid-cols-1 gap-4">
+                            {% for article in java_news %}
+                            {% if loop.index <= 12 %} <!-- Limit to 5 news articles -->
+                            <div class="bg-back p-6 rounded-lg">
+                                <h3 class="text-lg font-bold text-white mb-2">{{ article.title }}</h3>
+                                <p class="text-gray-300">{{ article.description }}</p>
+                                <a href="{{ article.url }}" target="_blank"
+                                    class="text-blue-500 hover:underline mt-2">Read more</a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="py-8">
+                        <h2 class="text-2xl font-bold text-white mb-4">Popular Java Repositories</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {% for repository in java_repositories %}
+                            {% if loop.index <= 12 %} <!-- Limit to 5 news articles -->
+                            <div class="bg-back p-6 rounded-lg">
+                                <h3 class="text-lg font-bold text-white mb-2">{{ repository.name }}</h3>
+                                <p class="text-gray-300">{{ repository.description }}</p>
+                                <div class="flex items-center mt-4">
+                                    <img src="{{ repository.owner.avatar_url }}" alt="Owner Avatar"
+                                        class="w-6 h-6 rounded-full mr-2">
+                                    <p class="text-gray-300">{{ repository.owner.login }}</p>
+                                </div>
+                                <a href="{{ repository.html_url }}" target="_blank"
+                                    class="text-blue-500 hover:underline mt-2">View on GitHub</a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        <footer class="flex justify-center items-center py-4">
+            <p class="text-gray-300">© 2023 Codegram. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll('.tab-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tab = button.dataset.tab;
+                showTab(tab);
+            });
+        });
+
+        function showTab(tab) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            const selectedSection = document.getElementById(tab);
+            selectedSection.style.display = 'block';
+        }
+
+        showTab('python');
+    </script>
+</body>
+
+</html>

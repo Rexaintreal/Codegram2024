@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to Codegram - The social media web application for coders to share code, collaborate, and connect with like-minded individuals. Join our coding community and unleash your coding potential.">
+  <meta name="keywords" content="Codegram, social media, web application, coder, code sharing, collaboration, coding community">
+  <meta name="author" content="Saurabh Tiwari">
+  <link rel="icon" href="/static/images/CG.png" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6131719978868968"
+    crossorigin="anonymous"></script>
+  <!-- Link to Tailwind CSS from CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Apply custom color classes from Tailwind CSS -->
+  <style>
+    body {
+      background-color: #121212; /* Apply the darkBackground color from Tailwind config */
+    }
+
+    #code-container {
+      font-family: 'Courier New', monospace, bold;
+      color: black;  /* purpleAccent color */
+      font-size: 20px; /* Increase font size */
+      white-space: pre-wrap;
+      overflow: hidden;
+      height: 50px; /* Set a fixed height for visibility */
+      position: relative;
+    }
+
+    .typed-cursor {
+      display: none; /* Hide the cursor */
+    }
+    h1 {
+          font-family: 'Source Code Pro', monospace;
+        }
+  </style>
+
+  <!-- Include typed.js -->
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;300;400;600;700&family=Montserrat:wght@500;600;700&family=Source+Code+Pro:wght@800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <title>Codegram - Login</title>
+</head>
+
+<body class="bg-black">
+  <div class="flex justify-center items-center h-screen">
+    <div class="max-w-md mx-auto p-6 border border-gray-800 rounded-lg bg-white dark:bg-gray-800 shadow-md">
+      <div class="text-center">
+        <h1 class="text-3xl font-bold mb-6 text-gray-900">Codegram</h1>
+      </div>
+      <div id="code-container"></div>
+      <form action="" method="post">
+        <!-- Apply custom color classes for input fields -->
+        <input class="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black" type="text" placeholder="Username" name="username" required>
+        <input class="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black" type="password" placeholder="Password" name="password" required>
+        <!-- Apply custom color classes for the login button -->
+        <button class="w-full py-2 mt-4 text-white bg-black rounded-lg border transition-colors duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black" type="submit">Log in</button>
+        <div class="text-red-500">{{ error }}</div>
+        <p class="text-center mt-4 border-b-2 border-gray-100 dark:border-gray-700">Or</p>
+        <div class="flex justify-center mt-4">
+          <!-- Apply custom color classes for the signup button -->
+          <button class="w-full py-2 mt-4  text-white bg-black rounded-lg border transition-colors duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black" type="button" onclick="location.href='/signup'">Sign up</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var options = {
+        strings: [
+          '// Welcome to Codegram!',
+          'const username = "your_username";',
+          'const password = "your_password";',
+        ],
+        typeSpeed: 50,  // Typing speed in milliseconds
+        backSpeed: 30,  // Backspacing speed in milliseconds
+        backDelay: 1000,  // Delay before starting to backspace
+        showCursor: false,  // Hide blinking cursor
+        loop: true  // Enable loop
+      };
+
+      var typed = new Typed('#code-container', options);
+    });
+  </script>
+</body>
+
+</html>

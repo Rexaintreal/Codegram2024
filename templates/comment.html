@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Codegram - Comment</title>
+  <script src="https://kit.fontawesome.com/d6f5400f00.js" crossorigin="anonymous"></script>
+  <link rel="icon" href="/static/images/CG.png" type="image/x-icon">
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-black">
+  <div class="container mx-auto">
+    <header class="flex justify-between items-center py-4">
+      <div class="logo flex item-centre">
+        <img src="/static/images/CG.png" alt="Codegram Logo" class="rounded-full w-12 h-12 mr-2">
+        <h1 class="text-white text-4xl font-bold">Codegram</h1>
+      </div>
+      <div class="search-bar flex justify-center">
+        <form action="/search" method="GET" class="flex items-center">
+          <input type="text" placeholder="Search" name="query" class="bg-white text-black py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800">
+          <button type="submit" class="ml-2 relative flex items-center transition-transform transform hover:scale-110">
+            <i class="fa-solid fa-magnifying-glass fa-xl" style="color: #ffffff;"></i>
+          </button>
+        </form>
+      </div>
+      <nav>
+        <ul class="flex items-center space-x-4">
+          <li>
+            <a href="/homepage" class="relative flex items-center transition-transform transform hover:scale-110 ">
+                <i title="Homepage" alt="Homepage" class="fa-solid fa-house fa-xl text-white"></i>
+            </a>
+          </li>
+          <li>
+            <a href="/create_post"class="relative flex items-center transition-transform transform hover:scale-110 ">
+              <i title="Create Post" alt="Create Post" class="fa-solid fa-square-plus fa-xl" style="color: #ffffff;"></i>
+            </a>
+          </li>
+          <li><a href="/profile" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Profile" alt="Profile" class="fa-solid fa-user fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/globalchat" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Global Chat" alt="Global Chat" class="fa-solid fa-paper-plane fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/settings" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Settings" alt="Settings" class="fa-solid fa-cog fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/community" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Community" alt="Community" class="fa-solid fa-users fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/logout" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Log Out" alt="logout" class="fa-solid fa-sign-out fa-xl" style="color: #ffffff;"></i></a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="py-4">
+      <div class="container mx-auto px-4">
+        <div class="rounded-lg shadow-lg p-4">
+          <div class="comments-section ">
+            <h2 class="text-2xl font-bold  space-y-auto text-white">Comments</h2>
+            {% if comments %}
+            <ul class="space-y-4">
+              {% for comment in comments %}
+              <li class="bg-white p-4 rounded-lg">
+                <p><strong>Username:</strong> {{ comment[2] }}</p>
+                <p><strong>Comment:</strong> {{ comment[3] }}</p>
+                <p><strong>Created At:</strong> {{ comment[4] }}</p>
+              </li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-xl text-white">No comments found.</p>
+            {% endif %}
+          </div>
+          <div class="add-comment-section mt-8">
+            <h2 class="text-2xl font-bold mb-4 text-white">Add a Comment</h2>
+            <form action="{{ url_for('comment_post', post_id=post_id) }}" method="POST" class="flex items-start">
+              <textarea name="comment" placeholder="Add a comment" class="flex-grow bg-white text-gray-800 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"></textarea>
+              <button type="submit" class="ml-4 bg-white border-black border  hover:bg-black hover:border-white hover:text-white text-black py-2 px-4 rounded-lg">Post Comment</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p class="text-white">&copy; 2023 Codegram</p>
+    </footer>
+    <script src="{{ url_for('static', filename='comment.js') }}"></script>
+  </body>
+  </html>

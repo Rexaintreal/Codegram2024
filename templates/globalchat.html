@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="icon" href="/static/images/CG.png" type="image/x-icon">
+
+  <title>Codegram - Chat</title>
+  <!-- Include Tailwind CSS -->
+  <script src="https://kit.fontawesome.com/d6f5400f00.js" crossorigin="anonymous"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+
+  #chat-history {
+    height: 455px; /* Set the default height of the chat */
+    max-height: 455px; /* Adjust the height as per your requirement */
+    overflow-y: auto; /* Add a scrollbar when content overflows */
+    background-image: url('static/images/chatbackground.jpg'); /* Set the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-position: center; /* Center the image within the chat area */
+    background-size: cover; /* Cover the entire chat area without stretching */
+    border-radius: 10px; /* Add rounded corners to the chat area */
+    padding: 10px; /* Add some padding to the chat area */
+  }
+
+    .message-container {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .message-content {
+      margin: 0;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .sent-message {
+      align-self: flex-end;
+      background-color: black;
+      color: white;
+      text-align: right;
+      margin-left: auto;
+    }
+
+    .received-message {
+      align-self: flex-start;
+      background-color: #1a202c;
+      color: white;
+      text-align: left;
+      margin-right: auto;
+    }
+
+    .message-content.sent-message {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .message-content.sent-message .profile-picture {
+      margin-bottom: 5px;
+    }
+
+    .message-content.sent-message .username {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .message-content.received-message {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .message-content.received-message .profile-picture {
+      margin-bottom: 5px;
+    }
+
+    .message-content.received-message .username {
+      margin-bottom: 5px;
+    }
+
+    .profile-picture {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .username {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .invert-icon {
+      filter: invert(100%);
+    }
+  </style>
+</head>
+<body class="bg-black">
+  <div class="container mx-auto">
+    <header class="flex justify-between items-center py-4">
+      <div class="logo flex item-centre">
+        <img src="static/images/CG.png" alt="Codegram Logo" class="rounded-full w-12 h-12 mr-2">
+        <h1 class="text-white text-4xl font-bold">Codegram</h1>
+      </div>
+      <div class="search-bar flex justify-center">
+        <form action="/search" method="GET" class="flex items-center">
+          <input type="text" placeholder="Search" name="query" class="bg-white text-black py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800">
+          <button type="submit" class="ml-2 relative flex items-center transition-transform transform hover:scale-110">
+            <i class="fa-solid fa-magnifying-glass fa-xl" style="color: #ffffff;"></i>
+          </button>
+        </form>
+      </div>
+      <nav>
+        <ul class="flex items-center space-x-4">
+          <li>
+            <a href="/homepage" class="relative flex items-center transition-transform transform hover:scale-110 ">
+                <i title="Homepage" alt="Homepage" class="fa-solid fa-house fa-xl text-white"></i>
+            </a>
+          </li>
+          <li>
+            <a href="/create_post"class="relative flex items-center transition-transform transform hover:scale-110 ">
+              <i title="Create Post" alt="Create Post" class="fa-solid fa-square-plus fa-xl" style="color: #ffffff;"></i>
+            </a>
+          </li>
+          <li><a href="/profile" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Profile" alt="Profile" class="fa-solid fa-user fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/globalchat" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Global Chat" alt="Global Chat" class="fa-solid fa-paper-plane fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/settings" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Settings" alt="Settings" class="fa-solid fa-cog fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/community" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Community" alt="Community" class="fa-solid fa-users fa-xl" style="color: #ffffff;"></i></a></li>
+          <li><a href="/logout" class="relative flex items-center transition-transform transform hover:scale-110 "><i title="Log Out" alt="logout" class="fa-solid fa-sign-out fa-xl" style="color: #ffffff;"></i></a></li>
+        </ul>
+      </nav>
+    </header>
+    <section class="section">
+      <div class="container">
+        <h1 class="text-1x font-bold mb-4 text-white">Public Chat</h1>
+
+        <div id="chat-history" class="post bg-gray-800 p-6 mb-6 rounded-lg text-gray-200">
+          <!-- Chat messages will be appended here dynamically -->
+        </div>
+
+        <div class="mt-4">
+          <div class="flex items-center">
+            <input id="username-input" class="bg-white text-black py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Username" value="{{ username }}" readonly>
+            <input id="message-input" class="bg-white text-black py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-black ml-4" type="text" placeholder="Message" spellcheck="true">
+            <button id="send-button" class="bg-white hover:bg-black text-black border border-black hover:border-white hover:text-white py-2 px-4 rounded-lg ml-4">Send</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // Function to retrieve chat messages from the server
+  function getChatHistory() {
+    $.ajax({
+      url: '/get_chat_history',
+      method: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        // Clear the chat history
+        $('#chat-history').empty();
+
+        // Append each message to the chat history
+        data.messages.forEach(function(message) {
+          var profilePictureUrl = '/static/uploads/' + message.username + '.jpg';
+          var defaultProfilePictureUrl = '/static/uploads/default.jpg';
+
+          var profilePictureElement = $('<img>').attr('src', profilePictureUrl).addClass('profile-picture').on('error', function() {
+            $(this).attr('src', defaultProfilePictureUrl);
+          });
+
+          var usernameElement = $('<strong>').text(message.username);
+          var messageElement = $('<p>').text(message.content);
+
+          var messageContainer = $('<div>').addClass('message-container');
+          var messageContent = $('<div>').addClass('message-content');
+
+          // Set the appropriate CSS class based on the sender of the message
+          if (message.username === "{{ username }}") {
+            messageContent.addClass('sent-message');
+            messageContainer.append(messageContent, profilePictureElement);
+          } else {
+            messageContent.addClass('received-message');
+            messageContainer.append(profilePictureElement, messageContent);
+          }
+
+          messageContent.append(usernameElement, messageElement);
+
+          // Append the message container to the chat history
+          $('#chat-history').append(messageContainer);
+        });
+
+        // Scroll to the bottom of the chat history
+        var chatHistory = document.getElementById('chat-history');
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+      },
+      error: function(xhr, status, error) {
+        console.log('Error:', error);
+      }
+    });
+  }
+
+    // Function to send a chat message to the server
+    function sendChatMessage(username, content) {
+      $.ajax({
+        url: '/send_chat_message',
+        method: 'POST',
+        data: JSON.stringify({ username: username, content: content }),
+        contentType: 'application/json',
+        success: function (data) {
+          // Clear the message input field
+          $('#message-input').val('');
+
+          // Retrieve the updated chat history
+          getChatHistory();
+        },
+        error: function (xhr, status, error) {
+          console.log('Error:', error);
+        }
+      });
+    }
+
+    // Event listener for the send button click
+    $('#send-button').click(function () {
+      var username = $('#username-input').val();
+      var content = $('#message-input').val();
+
+      if (username && content) {
+        sendChatMessage(username, content);
+      }
+    });
+
+    // Event listener for the enter key press in the message input field
+    $('#message-input').keypress(function (e) {
+      if (e.which == 13) {
+        var username = $('#username-input').val();
+        var content = $('#message-input').val();
+
+        if (username && content) {
+          sendChatMessage(username, content);
+        }
+      }
+    });
+
+    // Retrieve the initial chat history
+    getChatHistory();
+
+    // Periodically retrieve the updated chat history
+    setInterval(getChatHistory, 3000);
+  </script>
+
+  </div>
+</body>
+</html>
